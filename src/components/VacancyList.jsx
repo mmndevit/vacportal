@@ -1,4 +1,5 @@
 import StatusSelect from './StatusSelect'
+import { STATUS_MAP } from '../constants'
 import { LinkIcon, PencilIcon, TrashIcon, BriefcaseIcon } from '../icons'
 
 const fmtDate = (ts) =>
@@ -14,11 +15,17 @@ const hostOf = (url) => {
 
 function Row({ v, onStatus, onEdit, onRemove }) {
   const host = hostOf(v.url)
+  const s = STATUS_MAP[v.status]
   return (
-    <div className="group grid grid-cols-[1fr_auto] items-center gap-3 rounded-2xl px-4 py-3 transition hover:bg-canvas/60 sm:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_auto_auto]">
+    <div
+      className={`group relative grid grid-cols-[1fr_auto] items-center gap-3 rounded-2xl px-4 py-3 pl-5 transition sm:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_auto_auto] ${s?.row ?? 'hover:bg-canvas/60'}`}
+    >
+      {/* Status accent stripe on the leading edge */}
+      <span className={`absolute inset-y-2 left-1.5 w-1 rounded-full ${s?.edge ?? ''}`} />
+
       {/* Company + position */}
       <div className="flex min-w-0 items-center gap-3">
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-canvas text-sm font-semibold uppercase text-ink">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/70 text-sm font-semibold uppercase text-ink ring-1 ring-black/5">
           {v.company.slice(0, 2)}
         </span>
         <div className="min-w-0">

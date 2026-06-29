@@ -1,6 +1,12 @@
 // Single source of truth for the application pipeline stages.
-// `dot`/`text`/`bg`/`ring` are Tailwind utility fragments so badges and
-// charts stay visually consistent everywhere a status is rendered.
+// These are Tailwind utility fragments so a status looks identical everywhere
+// it is rendered (badge, dropdown, distribution bar, and the tinted row):
+//   dot   – the colored status dot
+//   text  – foreground text color
+//   bg    – pill / badge background
+//   bar   – solid color used in the distribution bar
+//   row   – subtle row tint + matching hover when a status is selected
+//   edge  – left accent stripe color for the row
 export const STATUSES = [
   {
     key: 'found',
@@ -9,38 +15,48 @@ export const STATUSES = [
     text: 'text-slate-600',
     bg: 'bg-slate-100',
     bar: 'bg-slate-300',
+    row: 'bg-slate-50 hover:bg-slate-100/80',
+    edge: 'bg-slate-300',
   },
   {
     key: 'cv_sent',
     label: 'CV sent',
     dot: 'bg-sky-500',
     text: 'text-sky-700',
-    bg: 'bg-sky-50',
+    bg: 'bg-sky-100',
     bar: 'bg-sky-400',
+    row: 'bg-sky-50 hover:bg-sky-100/70',
+    edge: 'bg-sky-400',
   },
   {
     key: 'interview',
     label: 'Interview',
     dot: 'bg-amber-500',
     text: 'text-amber-700',
-    bg: 'bg-amber-50',
+    bg: 'bg-amber-100',
     bar: 'bg-amber-400',
+    row: 'bg-amber-50 hover:bg-amber-100/70',
+    edge: 'bg-amber-400',
   },
   {
     key: 'decline',
     label: 'Decline',
     dot: 'bg-rose-500',
     text: 'text-rose-700',
-    bg: 'bg-rose-50',
+    bg: 'bg-rose-100',
     bar: 'bg-rose-400',
+    row: 'bg-rose-50 hover:bg-rose-100/70',
+    edge: 'bg-rose-400',
   },
   {
     key: 'hooray',
     label: 'HOOORAYY!',
     dot: 'bg-lime-500',
     text: 'text-lime-700',
-    bg: 'bg-lime-50',
+    bg: 'bg-lime-100',
     bar: 'bg-lime-400',
+    row: 'bg-lime-50 hover:bg-lime-100/70',
+    edge: 'bg-lime-400',
   },
 ]
 
