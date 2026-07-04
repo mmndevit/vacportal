@@ -1,6 +1,6 @@
 import StatusSelect from './StatusSelect'
 import { STATUS_MAP } from '../constants'
-import { LinkIcon, PencilIcon, TrashIcon, BriefcaseIcon } from '../icons'
+import { LinkIcon, PencilIcon, TrashIcon, BriefcaseIcon, CalendarIcon } from '../icons'
 
 const fmtDate = (ts) =>
   new Date(ts).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })
@@ -13,15 +13,17 @@ const hostOf = (url) => {
   }
 }
 
-function Row({ v, onStatus, onEdit, onRemove }) {
+function Row({ v, onStatus, onUpdate, onEdit, onRemove }) {
   const host = hostOf(v.url)
   const s = STATUS_MAP[v.status]
   return (
     <div
-      className={`group relative grid grid-cols-[1fr_auto] items-center gap-3 rounded-2xl px-4 py-3 pl-5 transition sm:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_auto_auto] ${s?.row ?? 'hover:bg-canvas/60'}`}
+      className={`group relative rounded-2xl px-4 py-3 pl-5 transition ${s?.row ?? 'hover:bg-canvas/60'}`}
     >
       {/* Status accent stripe on the leading edge */}
       <span className={`absolute inset-y-2 left-1.5 w-1 rounded-full ${s?.edge ?? ''}`} />
+
+      <div className="grid grid-cols-[1fr_auto] items-center gap-3 sm:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_auto_auto]">
 
       {/* Company + position */}
       <div className="flex min-w-0 items-center gap-3">
@@ -73,12 +75,27 @@ function Row({ v, onStatus, onEdit, onRemove }) {
         >
           <TrashIcon className="h-4.5 w-4.5" />
         </button>
+        </div>
       </div>
+
+      {/* Appointment date & time — only while the appointment status is active */}
+      {v.status === 'appointment' && (
+        <label className="mt-3 flex flex-wrap items-center gap-2 rounded-xl bg-white/70 px-3 py-2 text-xs font-medium text-indigo-700 ring-1 ring-indigo-200">
+          <CalendarIcon className="h-4 w-4 shrink-0" />
+          <span>Appointment on</span>
+          <input
+            type="datetime-local"
+            value={v.appointmentAt ?? ''}
+            onChange={(e) => onUpdate(v.id, { appointmentAt: e.target.value })}
+            className="rounded-lg border border-indigo-200 bg-white px-2 py-1 text-xs text-ink outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
+          />
+        </label>
+      )}
     </div>
   )
 }
 
-export default function VacancyList({ vacancies, onStatus, onEdit, onRemove }) {
+export default function VacancyList({ vacancies, onStatus, onUpdate, onEdit, onRemove }) {
   if (vacancies.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-line py-16 text-center">
@@ -94,7 +111,7 @@ export default function VacancyList({ vacancies, onStatus, onEdit, onRemove }) {
   return (
     <div className="flex flex-col gap-1">
       {vacancies.map((v) => (
-        <Row key={v.id} v={v} onStatus={onStatus} onEdit={onEdit} onRemove={onRemove} />
+        <Row key={v.id} v={v} onStatus={onStatus} onUpdate={onUpdate} onEdit={onEdit} onRemove={onRemove} />
       ))}
     </div>
   )

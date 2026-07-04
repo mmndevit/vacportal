@@ -102,6 +102,7 @@ export default function App() {
                 <VacancyList
                   vacancies={visible}
                   onStatus={(id, status) => updateVacancy(id, { status })}
+                  onUpdate={updateVacancy}
                   onEdit={openEdit}
                   onRemove={removeVacancy}
                 />
